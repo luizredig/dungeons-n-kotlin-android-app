@@ -1,5 +1,6 @@
 package com.github.luizredig.dungeons_n_kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,12 +22,10 @@ class CharacterCreationActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DungeonsNKotlinTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    CharacterCreationScreen(onBackClick = { finish() })
-                }
+                CharacterCreationScreen(onBackClick = { finish() }, onNextClick = {
+                    val intent = Intent(this, AttributeDistributionActivity::class.java)
+                    startActivity(intent)
+                })
             }
         }
     }
@@ -35,26 +33,16 @@ class CharacterCreationActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterCreationScreen(onBackClick: () -> Unit) {
+fun CharacterCreationScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
     var characterName by remember { mutableStateOf(TextFieldValue("")) }
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "Creating Character"
-                        )
-                    }
-                },
+                title = { Text("Creating Character") },
                 navigationIcon = {
                     IconButton(onClick = { onBackClick() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -83,7 +71,7 @@ fun CharacterCreationScreen(onBackClick: () -> Unit) {
                     OutlinedTextField(
                         value = characterName,
                         onValueChange = { characterName = it },
-                        label = { Text(text = "Character Name") },
+                        label = { Text("Character Name") },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -91,9 +79,7 @@ fun CharacterCreationScreen(onBackClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {
-                        Toast.makeText(context, "Name: ${characterName.text}", Toast.LENGTH_SHORT).show()
-                    },
+                    onClick = { onNextClick() },
                     enabled = characterName.text.isNotEmpty(),
                     modifier = Modifier
                         .align(Alignment.End)
@@ -104,12 +90,4 @@ fun CharacterCreationScreen(onBackClick: () -> Unit) {
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CharacterCreationScreenPreview() {
-    DungeonsNKotlinTheme {
-        CharacterCreationScreen(onBackClick = {})
-    }
 }
