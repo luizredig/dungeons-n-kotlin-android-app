@@ -1,5 +1,6 @@
 package com.github.luizredig.dungeons_n_kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +22,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainScreen {
+                        // Navega para a Activity de criação de personagem
+                        val intent = Intent(this, CharacterCreationActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
         }
@@ -29,7 +34,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(onStartClicked: () -> Unit) {
+    // Centraliza o conteúdo na tela
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,14 +43,16 @@ fun MainScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Título
         Text(
             text = "Dungeons N Kotlin",
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(20.dp)) // Espaço entre o título e o botão
 
-        Button(onClick = { /* TODO: Ação do botão Start */ }) {
+        // Botão "Start"
+        Button(onClick = onStartClicked) {
             Text(text = "Start")
         }
     }
@@ -54,6 +62,6 @@ fun MainScreen() {
 @Composable
 fun MainScreenPreview() {
     DungeonsNKotlinTheme {
-        MainScreen()
+        MainScreen(onStartClicked = {})
     }
 }
