@@ -1,4 +1,4 @@
-package com.github.luizredig.dungeons_n_kotlin
+package com.dnk.app
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import com.github.luizredig.dungeons_n_kotlin.ui.theme.DungeonsNKotlinTheme
+import com.dnk.app.theme.DungeonsNKotlinTheme
 
 class CharacterCreationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

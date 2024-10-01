@@ -1,4 +1,4 @@
-package com.github.luizredig.dungeons_n_kotlin
+package com.dnk.app
 
 import android.os.Bundle
 import android.widget.Toast
@@ -13,7 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import com.github.luizredig.dungeons_n_kotlin.ui.theme.DungeonsNKotlinTheme
+import com.dnk.app.theme.DungeonsNKotlinTheme
+
 
 class AttributeDistributionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,7 +173,9 @@ fun AttributeRow(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
         Text(text = attributeName, style = MaterialTheme.typography.bodyLarge)
         Row {

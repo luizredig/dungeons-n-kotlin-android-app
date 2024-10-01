@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.luizredig.dungeons_n_kotlin"
+    namespace = "com.dnk.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.luizredig.dungeons_n_kotlin"
+        applicationId = "com.dnk.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -30,13 +30,15 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
     }
@@ -65,7 +67,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
     // Jitpack
-    implementation("com.example:dungeons-n-kotlin:Tag")
+    implementation("com.github.luizredig:dungeons-n-kotlin-library:Beta")
 
     // Dependências do Room
     implementation("androidx.room:room-runtime:2.5.0")

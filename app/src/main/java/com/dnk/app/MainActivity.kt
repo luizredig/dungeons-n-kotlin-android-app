@@ -1,4 +1,4 @@
-package com.github.luizredig.dungeons_n_kotlin
+package com.dnk.app
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.luizredig.dungeons_n_kotlin.ui.theme.DungeonsNKotlinTheme
+import com.dnk.app.theme.DungeonsNKotlinTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

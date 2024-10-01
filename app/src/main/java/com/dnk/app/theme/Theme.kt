@@ -1,4 +1,4 @@
-package com.github.luizredig.dungeons_n_kotlin.ui.theme
+package com.dnk.app.theme
 
 import android.app.Activity
 import android.os.Build
