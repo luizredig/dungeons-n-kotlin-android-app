@@ -4,17 +4,24 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.ui.text.style.TextAlign
 import com.dnk.app.theme.DungeonsNKotlinTheme
-
 
 class AttributeDistributionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,113 +57,135 @@ fun AttributeDistributionScreen(onBackClick: () -> Unit) {
             )
         },
         content = { padding ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Available Points: $availablePoints", style = MaterialTheme.typography.headlineMedium)
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                AttributeRow(
-                    attributeName = "Strength",
-                    attributeValue = strength,
-                    onIncrement = {
-                        if (strength < 15 && availablePoints > 0) {
-                            strength++
-                            availablePoints--
-                        }
-                    },
-                    onDecrement = {
-                        if (strength > 8) {
-                            strength--
-                            availablePoints++
-                        }
-                    }
+                Image(
+                    painter = painterResource(id = R.drawable.atributesbackground),
+                    contentDescription = "Background Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
 
-                AttributeRow(
-                    attributeName = "Intelligence",
-                    attributeValue = intelligence,
-                    onIncrement = {
-                        if (intelligence < 15 && availablePoints > 0) {
-                            intelligence++
-                            availablePoints--
-                        }
-                    },
-                    onDecrement = {
-                        if (intelligence > 8) {
-                            intelligence--
-                            availablePoints++
-                        }
-                    }
-                )
-
-                AttributeRow(
-                    attributeName = "Faith",
-                    attributeValue = faith,
-                    onIncrement = {
-                        if (faith < 15 && availablePoints > 0) {
-                            faith++
-                            availablePoints--
-                        }
-                    },
-                    onDecrement = {
-                        if (faith > 8) {
-                            faith--
-                            availablePoints++
-                        }
-                    }
-                )
-
-                AttributeRow(
-                    attributeName = "Charisma",
-                    attributeValue = charisma,
-                    onIncrement = {
-                        if (charisma < 15 && availablePoints > 0) {
-                            charisma++
-                            availablePoints--
-                        }
-                    },
-                    onDecrement = {
-                        if (charisma > 8) {
-                            charisma--
-                            availablePoints++
-                        }
-                    }
-                )
-
-                AttributeRow(
-                    attributeName = "Dexterity",
-                    attributeValue = dexterity,
-                    onIncrement = {
-                        if (dexterity < 15 && availablePoints > 0) {
-                            dexterity++
-                            availablePoints--
-                        }
-                    },
-                    onDecrement = {
-                        if (dexterity > 8) {
-                            dexterity--
-                            availablePoints++
-                        }
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = {
-                        Toast.makeText(context, "Character Created!", Toast.LENGTH_SHORT).show()
-                    },
-                    enabled = availablePoints == 0,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Create Character")
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Available Points: $availablePoints",
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        AttributeRow(
+                            attributeName = "Strength",
+                            attributeValue = strength,
+                            onIncrement = {
+                                if (strength < 15 && availablePoints > 0) {
+                                    strength++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (strength > 8) {
+                                    strength--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
+                            attributeName = "Intelligence",
+                            attributeValue = intelligence,
+                            onIncrement = {
+                                if (intelligence < 15 && availablePoints > 0) {
+                                    intelligence++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (intelligence > 8) {
+                                    intelligence--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
+                            attributeName = "Faith",
+                            attributeValue = faith,
+                            onIncrement = {
+                                if (faith < 15 && availablePoints > 0) {
+                                    faith++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (faith > 8) {
+                                    faith--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
+                            attributeName = "Charisma",
+                            attributeValue = charisma,
+                            onIncrement = {
+                                if (charisma < 15 && availablePoints > 0) {
+                                    charisma++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (charisma > 8) {
+                                    charisma--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
+                            attributeName = "Dexterity",
+                            attributeValue = dexterity,
+                            onIncrement = {
+                                if (dexterity < 15 && availablePoints > 0) {
+                                    dexterity++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (dexterity > 8) {
+                                    dexterity--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Button(
+                            onClick = {
+                                Toast.makeText(context, "Character Created!", Toast.LENGTH_SHORT).show()
+                            },
+                            enabled = availablePoints == 0,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        ) {
+                            Text(text = "Create Character")
+                        }
+                    }
                 }
             }
         }
@@ -178,15 +207,31 @@ fun AttributeRow(
             .padding(vertical = 8.dp)
     ) {
         Text(text = attributeName, style = MaterialTheme.typography.bodyLarge)
-        Row {
-            Button(onClick = { onDecrement() }, enabled = attributeValue > 8) {
-                Text("-")
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            IconButton(
+                onClick = { onDecrement() },
+                enabled = attributeValue > 8
+            ) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Decrement")
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = attributeValue.toString(), style = MaterialTheme.typography.bodyLarge)
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = { onIncrement() }, enabled = attributeValue < 15) {
-                Text("+")
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = attributeValue.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .width(32.dp)
+                    .align(Alignment.CenterVertically),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            IconButton(
+                onClick = { onIncrement() },
+                enabled = attributeValue < 15
+            ) {
+                Icon(Icons.Default.ArrowForward, contentDescription = "Increment")
             }
         }
     }
