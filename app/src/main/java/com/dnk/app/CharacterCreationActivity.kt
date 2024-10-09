@@ -2,15 +2,16 @@ package com.dnk.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
@@ -23,7 +24,7 @@ class CharacterCreationActivity : ComponentActivity() {
         setContent {
             DungeonsNKotlinTheme {
                 CharacterCreationScreen(onBackClick = { finish() }, onNextClick = {
-                    val intent = Intent(this, AttributeDistributionActivity::class.java)
+                    val intent = Intent(this, RaceSelectionActivity::class.java)
                     startActivity(intent)
                 })
             }
@@ -48,44 +49,55 @@ fun CharacterCreationScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
             )
         },
         content = { padding ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Image(
+                    painter = painterResource(id = R.drawable.creationbackground),
+                    contentDescription = "Background Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalAlignment = Alignment.Start
+                        .padding(horizontal = 32.dp)
+                        .align(Alignment.Center),
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                    tonalElevation = 8.dp,
                 ) {
-                    Text(
-                        text = "First, let's define your new character's name.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+                    Column(
+                        modifier = Modifier.padding(24.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "First, let's define your new character's name.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
 
-                    OutlinedTextField(
-                        value = characterName,
-                        onValueChange = { characterName = it },
-                        label = { Text("Character Name") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                        OutlinedTextField(
+                            value = characterName,
+                            onValueChange = { characterName = it },
+                            label = { Text("Character Name") },
+                            modifier = Modifier.fillMaxWidth()
+                        )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
-                Button(
-                    onClick = { onNextClick() },
-                    enabled = characterName.text.isNotEmpty(),
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(horizontal = 24.dp)
-                ) {
-                    Text(text = "Next")
+                        Button(
+                            onClick = { onNextClick() },
+                            enabled = characterName.text.isNotEmpty(),
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text(text = "Next")
+                        }
+                    }
                 }
             }
         }
