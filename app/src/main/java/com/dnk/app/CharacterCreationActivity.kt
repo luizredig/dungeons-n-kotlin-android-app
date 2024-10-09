@@ -23,7 +23,7 @@ class CharacterCreationActivity : ComponentActivity() {
         setContent {
             DungeonsNKotlinTheme {
                 CharacterCreationScreen(onBackClick = { finish() }, onNextClick = {
-                    val intent = Intent(this, AttributeDistributionActivity::class.java)
+                    val intent = Intent(this, RaceSelectionActivity::class.java)
                     startActivity(intent)
                 })
             }
