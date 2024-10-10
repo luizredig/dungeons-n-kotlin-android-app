@@ -38,11 +38,12 @@ class AttributeDistributionActivity : ComponentActivity() {
 @Composable
 fun AttributeDistributionScreen(onBackClick: () -> Unit) {
     var availablePoints by remember { mutableStateOf(27) }
+    var dexterity by remember { mutableStateOf(8) }
+    var constitution by remember { mutableStateOf(8) }
     var strength by remember { mutableStateOf(8) }
     var intelligence by remember { mutableStateOf(8) }
-    var faith by remember { mutableStateOf(8) }
+    var wisdom by remember { mutableStateOf(8) }
     var charisma by remember { mutableStateOf(8) }
-    var dexterity by remember { mutableStateOf(8) }
     val context = LocalContext.current
 
     Scaffold(
@@ -107,6 +108,40 @@ fun AttributeDistributionScreen(onBackClick: () -> Unit) {
                         )
 
                         AttributeRow(
+                            attributeName = "Dexterity",
+                            attributeValue = dexterity,
+                            onIncrement = {
+                                if (dexterity < 15 && availablePoints > 0) {
+                                    dexterity++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (dexterity > 8) {
+                                    dexterity--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
+                            attributeName = "Constitution",
+                            attributeValue = constitution,
+                            onIncrement = {
+                                if (constitution < 15 && availablePoints > 0) {
+                                    constitution++
+                                    availablePoints--
+                                }
+                            },
+                            onDecrement = {
+                                if (dexterity > 8) {
+                                    dexterity--
+                                    availablePoints++
+                                }
+                            }
+                        )
+
+                        AttributeRow(
                             attributeName = "Intelligence",
                             attributeValue = intelligence,
                             onIncrement = {
@@ -124,17 +159,17 @@ fun AttributeDistributionScreen(onBackClick: () -> Unit) {
                         )
 
                         AttributeRow(
-                            attributeName = "Faith",
-                            attributeValue = faith,
+                            attributeName = "Wisdom",
+                            attributeValue = wisdom,
                             onIncrement = {
-                                if (faith < 15 && availablePoints > 0) {
-                                    faith++
+                                if (wisdom < 15 && availablePoints > 0) {
+                                    wisdom++
                                     availablePoints--
                                 }
                             },
                             onDecrement = {
-                                if (faith > 8) {
-                                    faith--
+                                if (wisdom > 8) {
+                                    wisdom--
                                     availablePoints++
                                 }
                             }
@@ -157,28 +192,12 @@ fun AttributeDistributionScreen(onBackClick: () -> Unit) {
                             }
                         )
 
-                        AttributeRow(
-                            attributeName = "Dexterity",
-                            attributeValue = dexterity,
-                            onIncrement = {
-                                if (dexterity < 15 && availablePoints > 0) {
-                                    dexterity++
-                                    availablePoints--
-                                }
-                            },
-                            onDecrement = {
-                                if (dexterity > 8) {
-                                    dexterity--
-                                    availablePoints++
-                                }
-                            }
-                        )
-
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Button(
                             onClick = {
-                                Toast.makeText(context, "Character Created!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Character Created!", Toast.LENGTH_SHORT)
+                                    .show()
                             },
                             enabled = availablePoints == 0,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
