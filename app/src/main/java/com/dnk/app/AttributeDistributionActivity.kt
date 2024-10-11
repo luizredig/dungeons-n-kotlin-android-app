@@ -42,7 +42,6 @@ class AttributeDistributionActivity : ComponentActivity() {
 fun AttributeDistributionScreen(character: dnk.library.character.Character, onBackClick: () -> Unit) {
     var availablePoints by remember { mutableStateOf(27) }
 
-    // Variáveis para armazenar os atributos do personagem, inicialmente todos em 8
     var strength by remember { mutableStateOf(8) }
     var dexterity by remember { mutableStateOf(8) }
     var constitution by remember { mutableStateOf(8) }
@@ -69,15 +68,13 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                     .fillMaxSize()
                     .padding(padding)
             ) {
-                // Adicionando a imagem de fundo
                 Image(
-                    painter = painterResource(id = R.drawable.creationbackground), // Certifique-se que o id da imagem está correto
+                    painter = painterResource(id = R.drawable.initialbackground),
                     contentDescription = "Background Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
 
-                // Caixa sobreposta com transparência
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -91,14 +88,12 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Reintroduzindo o texto de "Available Points"
                         Text(
                             text = "Available Points: $availablePoints",
                             style = MaterialTheme.typography.headlineMedium,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
 
-                        // Exibir e ajustar atributos com controles de incremento/decremento
                         AttributeRow(
                             attributeName = "Strength",
                             attributeValue = strength,
@@ -203,10 +198,8 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Botão para criar o personagem com os atributos definidos
                         Button(
                             onClick = {
-                                // Atribui os valores selecionados aos atributos do personagem
                                 character.attributes = dnk.library.attributes.Attributes(
                                     strength = strength,
                                     dexterity = dexterity,
@@ -216,12 +209,11 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                                     charisma = charisma
                                 )
 
-                                // Passa o personagem para a próxima activity (CharacterViewActivity)
                                 val intent = Intent(context, CharacterViewActivity::class.java)
                                 intent.putExtra("character", character)
                                 context.startActivity(intent)
                             },
-                            enabled = availablePoints == 0, // O botão só fica habilitado quando todos os pontos são distribuídos
+                            enabled = availablePoints == 0,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         ) {
                             Text(text = "Create Character")
