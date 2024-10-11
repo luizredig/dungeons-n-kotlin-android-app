@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -90,7 +92,7 @@ fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick
                         .padding(16.dp)
                         .align(Alignment.Center)
                         .background(
-                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+                            color = MaterialTheme.colorScheme.surface,
                             shape = MaterialTheme.shapes.medium
                         )
                         .padding(20.dp)
@@ -123,13 +125,18 @@ fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                                 },
-                                colors = ExposedDropdownMenuDefaults.textFieldColors()
+                                colors = ExposedDropdownMenuDefaults.textFieldColors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface
+                                )
                             )
 
                             ExposedDropdownMenu(
                                 expanded = expanded,
                                 onDismissRequest = { expanded = false },
-                                modifier = Modifier.heightIn(max = 200.dp)
+                                modifier = Modifier
+                                    .heightIn(max = 180.dp)
+                                    .verticalScroll(rememberScrollState())
                             ) {
                                 breedMap.keys.forEach { breed ->
                                     DropdownMenuItem(
