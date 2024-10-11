@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,7 @@ class CharacterViewActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Recebe o personagem completo
-        val character = intent.getSerializableExtra("character") as dnk.library.character.Character
+        val character = intent.getSerializableExtra("character") as Character
 
         setContent {
             DungeonsNKotlinTheme {
