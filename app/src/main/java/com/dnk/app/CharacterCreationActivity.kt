@@ -47,9 +47,9 @@ class CharacterCreationActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterCreationScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
-    var characterName by remember { mutableStateOf(character.name) } // Usando String em vez de TextFieldValue
+    var characterName by remember { mutableStateOf(character.name) }
     val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current // Controlador de teclado
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         topBar = {
@@ -63,17 +63,16 @@ fun CharacterCreationScreen(character: dnk.library.character.Character, onBackCl
             )
         },
         content = { padding ->
-            // Ao clicar fora do campo de texto, o teclado será escondido
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        keyboardController?.hide() // Esconde o teclado ao clicar fora
+                        keyboardController?.hide()
                     }
                     .padding(padding)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.creationbackground),
+                    painter = painterResource(id = R.drawable.charactercreationbackground),
                     contentDescription = "Background Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -100,19 +99,19 @@ fun CharacterCreationScreen(character: dnk.library.character.Character, onBackCl
                         )
 
                         OutlinedTextField(
-                            value = characterName, // Agora utilizando String
+                            value = characterName,
                             onValueChange = { newName -> characterName = newName },
                             label = { Text("Character Name") },
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done // Define o comportamento da tecla "Done"
+                                imeAction = ImeAction.Done
                             ),
                             keyboardActions = KeyboardActions(
                                 onDone = {
                                     if (characterName.isNotBlank()) {
                                         character.name = characterName
                                         onNextClick()
-                                        keyboardController?.hide() // Esconde o teclado
+                                        keyboardController?.hide()
                                     } else {
                                         Toast.makeText(context, "Please enter a character name", Toast.LENGTH_SHORT).show()
                                     }
