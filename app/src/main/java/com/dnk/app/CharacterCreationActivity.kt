@@ -6,32 +6,36 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.ExperimentalComposeUiApi
 import com.dnk.app.theme.DungeonsNKotlinTheme
+
 
 class CharacterCreationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Recupera o personagem da intent
         val character = intent.getSerializableExtra("character") as dnk.library.character.Character
 
         setContent {
             DungeonsNKotlinTheme {
                 CharacterCreationScreen(character = character, onBackClick = { finish() }, onNextClick = {
                     val intent = Intent(this, BreedSelectionActivity::class.java)
-                    // Passa o objeto character atualizado com o nome
                     intent.putExtra("character", character)
                     startActivity(intent)
                 })
@@ -40,11 +44,12 @@ class CharacterCreationActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterCreationScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
-    var characterName by remember { mutableStateOf(TextFieldValue(character.name)) }
+    var characterName by remember { mutableStateOf(character.name) } // Usando String em vez de TextFieldValue
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current // Controlador de teclado
 
     Scaffold(
         topBar = {
@@ -58,9 +63,13 @@ fun CharacterCreationScreen(character: dnk.library.character.Character, onBackCl
             )
         },
         content = { padding ->
+            // Ao clicar fora do campo de texto, o teclado será escondido
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .clickable {
+                        keyboardController?.hide() // Esconde o teclado ao clicar fora
+                    }
                     .padding(padding)
             ) {
                 Image(
@@ -91,25 +100,38 @@ fun CharacterCreationScreen(character: dnk.library.character.Character, onBackCl
                         )
 
                         OutlinedTextField(
-                            value = characterName,
-                            onValueChange = { characterName = it },
+                            value = characterName, // Agora utilizando String
+                            onValueChange = { newName -> characterName = newName },
                             label = { Text("Character Name") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done // Define o comportamento da tecla "Done"
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    if (characterName.isNotBlank()) {
+                                        character.name = characterName
+                                        onNextClick()
+                                        keyboardController?.hide() // Esconde o teclado
+                                    } else {
+                                        Toast.makeText(context, "Please enter a character name", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Button(
                             onClick = {
-                                if (characterName.text.isNotBlank()) {
-                                    character.name = characterName.text
+                                if (characterName.isNotBlank()) {
+                                    character.name = characterName
                                     onNextClick()
                                 } else {
-                                    // Mostrar o Toast com a mensagem de erro
                                     Toast.makeText(context, "Please enter a character name", Toast.LENGTH_SHORT).show()
                                 }
                             },
-                            enabled = characterName.text.isNotBlank(),
+                            enabled = characterName.isNotBlank(),
                             modifier = Modifier.align(Alignment.End)
                         ) {
                             Text(text = "Next")
