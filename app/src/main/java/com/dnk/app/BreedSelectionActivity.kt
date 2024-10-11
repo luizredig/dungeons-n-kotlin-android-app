@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,6 +13,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dnk.app.theme.DungeonsNKotlinTheme
 import dnk.library.breeds.*
@@ -56,7 +60,6 @@ fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick
         "Tiefling" to Tiefling()
     )
 
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -69,81 +72,95 @@ fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick
             )
         },
         content = { padding ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Image(
+                    painter = painterResource(id = R.drawable.breedselectionbackgroud),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalAlignment = Alignment.Start
+                        .padding(16.dp)
+                        .align(Alignment.Center)
+                        .background(
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(20.dp)
                 ) {
-                    Text(
-                        text = "Please select your character's breed.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    var expanded by remember { mutableStateOf(false) }
-
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded }
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
                     ) {
-                        OutlinedTextField(
-                            value = selectedBreed,
-                            onValueChange = { },
-                            label = { Text("Breed") },
-                            readOnly = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor(),
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                            },
-                            colors = ExposedDropdownMenuDefaults.textFieldColors()
+                        Text(
+                            text = "Please select your character's breed.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(bottom = 16.dp)
                         )
 
-                        ExposedDropdownMenu(
+                        var expanded by remember { mutableStateOf(false) }
+
+                        ExposedDropdownMenuBox(
                             expanded = expanded,
-                            onDismissRequest = { expanded = false },
-                            modifier = Modifier.heightIn(max = 200.dp)
+                            onExpandedChange = { expanded = !expanded }
                         ) {
-                            breedMap.keys.forEach { breed ->
-                                DropdownMenuItem(
-                                    text = { Text(text = breed) },
-                                    onClick = {
-                                        selectedBreed = breed
-                                        expanded = false
-                                    }
-                                )
+                            OutlinedTextField(
+                                value = selectedBreed,
+                                onValueChange = { },
+                                label = { Text("Breed") },
+                                readOnly = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(),
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                                },
+                                colors = ExposedDropdownMenuDefaults.textFieldColors()
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false },
+                                modifier = Modifier.heightIn(max = 200.dp)
+                            ) {
+                                breedMap.keys.forEach { breed ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = breed) },
+                                        onClick = {
+                                            selectedBreed = breed
+                                            expanded = false
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
 
-                Button(
-                    onClick = {
-                        val selectedBreed = breedMap[selectedBreed]
-                        if (selectedBreed != null) {
-                            character.breed = selectedBreed
-                            onNextClick()
+                        Button(
+                            onClick = {
+                                val selectedBreed = breedMap[selectedBreed]
+                                if (selectedBreed != null) {
+                                    character.breed = selectedBreed
+                                    onNextClick()
+                                }
+                            },
+                            enabled = selectedBreed.isNotEmpty(),
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text(text = "Next")
                         }
-                    },
-                    enabled = selectedBreed.isNotEmpty(),
-                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    Text(text = "Next")
+                    }
                 }
             }
         }
     )
 }
-
