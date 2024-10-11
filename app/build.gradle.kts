@@ -67,10 +67,11 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
     // Jitpack
-    implementation("com.github.luizredig:dungeons-n-kotlin-library:Beta")
+    implementation("com.github.luizredig:dungeons-n-kotlin-library:Foxtrop")
 
     // Dependências do Room
     implementation("androidx.room:room-runtime:2.5.0")
+    implementation("androidx.activity:activity:1.9.2")
     kapt("androidx.room:room-compiler:2.5.0")
 
     testImplementation("junit:junit:4.13.2")

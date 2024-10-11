@@ -2,6 +2,7 @@ package com.dnk.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -16,15 +17,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import com.dnk.app.theme.DungeonsNKotlinTheme
 
 class CharacterCreationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Recupera o personagem da intent
+        val character = intent.getSerializableExtra("character") as dnk.library.character.Character
+
         setContent {
             DungeonsNKotlinTheme {
-                CharacterCreationScreen(onBackClick = { finish() }, onNextClick = {
+                CharacterCreationScreen(character = character, onBackClick = { finish() }, onNextClick = {
                     val intent = Intent(this, RaceSelectionActivity::class.java)
+                    // Passa o objeto character atualizado com o nome
+                    intent.putExtra("character", character)
                     startActivity(intent)
                 })
             }
@@ -34,8 +43,9 @@ class CharacterCreationActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterCreationScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
-    var characterName by remember { mutableStateOf(TextFieldValue("")) }
+fun CharacterCreationScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
+    var characterName by remember { mutableStateOf(TextFieldValue(character.name)) }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -91,8 +101,16 @@ fun CharacterCreationScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Button(
-                            onClick = { onNextClick() },
-                            enabled = characterName.text.isNotEmpty(),
+                            onClick = {
+                                if (characterName.text.isNotBlank()) {
+                                    character.name = characterName.text
+                                    onNextClick()
+                                } else {
+                                    // Mostrar o Toast com a mensagem de erro
+                                    Toast.makeText(context, "Please enter a character name", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            enabled = characterName.text.isNotBlank(),
                             modifier = Modifier.align(Alignment.End)
                         ) {
                             Text(text = "Next")

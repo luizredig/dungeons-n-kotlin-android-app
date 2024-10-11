@@ -23,8 +23,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     MainScreen {
-                        // Navega para a Activity de criação de personagem
+                        val character = dnk.library.character.Character()
                         val intent = Intent(this, CharacterCreationActivity::class.java)
+                        intent.putExtra("character", character)
                         startActivity(intent)
                     }
                 }

@@ -13,14 +13,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dnk.app.theme.DungeonsNKotlinTheme
+import dnk.library.breeds.Dragonborn
+import dnk.library.breeds.DwarfHill
+import dnk.library.breeds.DwarfMountain
+import dnk.library.breeds.ElfDrow
+import dnk.library.breeds.ElfForest
+import dnk.library.breeds.ElfHigh
+import dnk.library.breeds.Gnome
+import dnk.library.breeds.GnomeForest
+import dnk.library.breeds.GnomeRock
+import dnk.library.breeds.HalfElf
+import dnk.library.breeds.HalfOrc
+import dnk.library.breeds.Halfling
+import dnk.library.breeds.HalflingLightfoot
+import dnk.library.breeds.HalflingStout
+import dnk.library.breeds.Human
+import dnk.library.breeds.Tiefling
 
 class RaceSelectionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Recupera o personagem da intent
+        val character = intent.getSerializableExtra("character") as dnk.library.character.Character
+
         setContent {
             DungeonsNKotlinTheme {
-                RaceSelectionScreen(onBackClick = { finish() }, onNextClick = {
+                RaceSelectionScreen(character = character, onBackClick = { finish() }, onNextClick = {
                     val intent = Intent(this, AttributeDistributionActivity::class.java)
+                    intent.putExtra("character", character) // Passa o personagem atualizado
                     startActivity(intent)
                 })
             }
@@ -30,13 +51,27 @@ class RaceSelectionActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RaceSelectionScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
+fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
     var selectedRace by remember { mutableStateOf("") }
-    val races = listOf(
-        "Dragonborn", "DwarfHill", "DwarfMountain", "ElfDrow", "ElfForest",
-        "ElfHigh", "Gnome", "GnomeForest", "GnomeRock", "HalfElf", "Halfling",
-        "HalflingLightfoot", "HalflingStout", "HalfOrc", "Human", "Tiefling"
+    val breedMap = mapOf(
+        "Dragonborn" to Dragonborn(),
+        "DwarfHill" to DwarfHill(),
+        "DwarfMountain" to DwarfMountain(),
+        "ElfDrow" to ElfDrow(),
+        "ElfForest" to ElfForest(),
+        "ElfHigh" to ElfHigh(),
+        "Gnome" to Gnome(),
+        "GnomeForest" to GnomeForest(),
+        "GnomeRock" to GnomeRock(),
+        "HalfElf" to HalfElf(),
+        "Halfling" to Halfling(),
+        "HalflingLightfoot" to HalflingLightfoot(),
+        "HalflingStout" to HalflingStout(),
+        "HalfOrc" to HalfOrc(),
+        "Human" to Human(),
+        "Tiefling" to Tiefling()
     )
+
 
     Scaffold(
         topBar = {
@@ -95,11 +130,11 @@ fun RaceSelectionScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
                             onDismissRequest = { expanded = false },
                             modifier = Modifier.heightIn(max = 200.dp) // Limitar a altura do menu para 4 itens
                         ) {
-                            races.forEach { race ->
+                            breedMap.keys.forEach { race ->
                                 DropdownMenuItem(
                                     text = { Text(text = race) },
                                     onClick = {
-                                        selectedRace = race
+                                        selectedRace = race // Atualiza a raça selecionada com a chave do breedMap
                                         expanded = false
                                     }
                                 )
@@ -111,11 +146,15 @@ fun RaceSelectionScreen(onBackClick: () -> Unit, onNextClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = { onNextClick() },
+                    onClick = {
+                        val selectedBreed = breedMap[selectedRace] // Obtém o IBreed da raça selecionada
+                        if (selectedBreed != null) {
+                            character.breed = selectedBreed // Atribui a raça ao objeto Character
+                            onNextClick()
+                        }
+                    },
                     enabled = selectedRace.isNotEmpty(),
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(horizontal = 24.dp)
+                    modifier = Modifier.align(Alignment.End)
                 ) {
                     Text(text = "Next")
                 }
