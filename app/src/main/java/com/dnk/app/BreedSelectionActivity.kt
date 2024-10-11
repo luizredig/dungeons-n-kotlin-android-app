@@ -154,9 +154,9 @@ fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick
 
                         Button(
                             onClick = {
-                                val selectedBreed = breedMap[selectedBreed]
-                                if (selectedBreed != null) {
-                                    character.breed = selectedBreed
+                                val tempBreed = breedMap[selectedBreed]
+                                if (tempBreed != null) {
+                                    character.breed = tempBreed
                                     onNextClick()
                                 }
                             },
