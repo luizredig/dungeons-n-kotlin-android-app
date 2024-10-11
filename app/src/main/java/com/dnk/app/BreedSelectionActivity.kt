@@ -13,35 +13,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dnk.app.theme.DungeonsNKotlinTheme
-import dnk.library.breeds.Dragonborn
-import dnk.library.breeds.DwarfHill
-import dnk.library.breeds.DwarfMountain
-import dnk.library.breeds.ElfDrow
-import dnk.library.breeds.ElfForest
-import dnk.library.breeds.ElfHigh
-import dnk.library.breeds.Gnome
-import dnk.library.breeds.GnomeForest
-import dnk.library.breeds.GnomeRock
-import dnk.library.breeds.HalfElf
-import dnk.library.breeds.HalfOrc
-import dnk.library.breeds.Halfling
-import dnk.library.breeds.HalflingLightfoot
-import dnk.library.breeds.HalflingStout
-import dnk.library.breeds.Human
-import dnk.library.breeds.Tiefling
+import dnk.library.breeds.*
 
-class RaceSelectionActivity : ComponentActivity() {
+class BreedSelectionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Recupera o personagem da intent
         val character = intent.getSerializableExtra("character") as dnk.library.character.Character
 
         setContent {
             DungeonsNKotlinTheme {
-                RaceSelectionScreen(character = character, onBackClick = { finish() }, onNextClick = {
+                BreedSelectionScreen(character = character, onBackClick = { finish() }, onNextClick = {
                     val intent = Intent(this, AttributeDistributionActivity::class.java)
-                    intent.putExtra("character", character) // Passa o personagem atualizado
+                    intent.putExtra("character", character)
                     startActivity(intent)
                 })
             }
@@ -51,8 +35,8 @@ class RaceSelectionActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
-    var selectedRace by remember { mutableStateOf("") }
+fun BreedSelectionScreen(character: dnk.library.character.Character, onBackClick: () -> Unit, onNextClick: () -> Unit) {
+    var selectedBreed by remember { mutableStateOf("") }
     val breedMap = mapOf(
         "Dragonborn" to Dragonborn(),
         "DwarfHill" to DwarfHill(),
@@ -76,7 +60,7 @@ fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick:
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Select Race") },
+                title = { Text("Select Breed") },
                 navigationIcon = {
                     IconButton(onClick = { onBackClick() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -100,7 +84,7 @@ fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick:
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = "Please select your character's race.",
+                        text = "Please select your character's breed.",
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -112,9 +96,9 @@ fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick:
                         onExpandedChange = { expanded = !expanded }
                     ) {
                         OutlinedTextField(
-                            value = selectedRace,
+                            value = selectedBreed,
                             onValueChange = { },
-                            label = { Text("Race") },
+                            label = { Text("Breed") },
                             readOnly = true,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -128,13 +112,13 @@ fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick:
                         ExposedDropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
-                            modifier = Modifier.heightIn(max = 200.dp) // Limitar a altura do menu para 4 itens
+                            modifier = Modifier.heightIn(max = 200.dp)
                         ) {
-                            breedMap.keys.forEach { race ->
+                            breedMap.keys.forEach { breed ->
                                 DropdownMenuItem(
-                                    text = { Text(text = race) },
+                                    text = { Text(text = breed) },
                                     onClick = {
-                                        selectedRace = race // Atualiza a raça selecionada com a chave do breedMap
+                                        selectedBreed = breed
                                         expanded = false
                                     }
                                 )
@@ -147,13 +131,13 @@ fun RaceSelectionScreen(character: dnk.library.character.Character, onBackClick:
 
                 Button(
                     onClick = {
-                        val selectedBreed = breedMap[selectedRace] // Obtém o IBreed da raça selecionada
+                        val selectedBreed = breedMap[selectedBreed]
                         if (selectedBreed != null) {
-                            character.breed = selectedBreed // Atribui a raça ao objeto Character
+                            character.breed = selectedBreed
                             onNextClick()
                         }
                     },
-                    enabled = selectedRace.isNotEmpty(),
+                    enabled = selectedBreed.isNotEmpty(),
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Text(text = "Next")

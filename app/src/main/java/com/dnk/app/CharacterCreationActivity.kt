@@ -30,7 +30,7 @@ class CharacterCreationActivity : ComponentActivity() {
         setContent {
             DungeonsNKotlinTheme {
                 CharacterCreationScreen(character = character, onBackClick = { finish() }, onNextClick = {
-                    val intent = Intent(this, RaceSelectionActivity::class.java)
+                    val intent = Intent(this, BreedSelectionActivity::class.java)
                     // Passa o objeto character atualizado com o nome
                     intent.putExtra("character", character)
                     startActivity(intent)

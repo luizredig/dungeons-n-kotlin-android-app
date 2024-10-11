@@ -16,7 +16,7 @@
             android:name=".CharacterViewActivity"
             android:exported="false" />
         <activity
-            android:name=".RaceSelectionActivity"
+            android:name=".BreedSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".AttributeDistributionActivity"
