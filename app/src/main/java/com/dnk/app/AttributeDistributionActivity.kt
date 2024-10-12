@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dnk.app.theme.DungeonsNKotlinTheme
+import dungeons_n_kotlin.classes.modifiers.AttributesModifier
 
 class AttributeDistributionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,15 +99,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Strength",
                             attributeValue = strength,
                             onIncrement = {
-                                if (availablePoints > 0 && strength < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(strength + 1) - AttributesModifier.calculateAttributeCost(strength)
+                                if (availablePoints >= costToIncrease && strength < 15) {
                                     strength++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(strength) - AttributesModifier.calculateAttributeCost(strength - 1)
                                 if (strength > 8) {
                                     strength--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
@@ -115,15 +118,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Dexterity",
                             attributeValue = dexterity,
                             onIncrement = {
-                                if (availablePoints > 0 && dexterity < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(dexterity + 1) - AttributesModifier.calculateAttributeCost(dexterity)
+                                if (availablePoints >= costToIncrease && dexterity < 15) {
                                     dexterity++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(dexterity) - AttributesModifier.calculateAttributeCost(dexterity - 1)
                                 if (dexterity > 8) {
                                     dexterity--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
@@ -132,15 +137,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Constitution",
                             attributeValue = constitution,
                             onIncrement = {
-                                if (availablePoints > 0 && constitution < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(constitution + 1) - AttributesModifier.calculateAttributeCost(constitution)
+                                if (availablePoints >= costToIncrease && constitution < 15) {
                                     constitution++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(constitution) - AttributesModifier.calculateAttributeCost(constitution - 1)
                                 if (constitution > 8) {
                                     constitution--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
@@ -149,15 +156,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Intelligence",
                             attributeValue = intelligence,
                             onIncrement = {
-                                if (availablePoints > 0 && intelligence < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(intelligence + 1) - AttributesModifier.calculateAttributeCost(intelligence)
+                                if (availablePoints >= costToIncrease && intelligence < 15) {
                                     intelligence++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(intelligence) - AttributesModifier.calculateAttributeCost(intelligence - 1)
                                 if (intelligence > 8) {
                                     intelligence--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
@@ -166,15 +175,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Wisdom",
                             attributeValue = wisdom,
                             onIncrement = {
-                                if (availablePoints > 0 && wisdom < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(wisdom + 1) - AttributesModifier.calculateAttributeCost(wisdom)
+                                if (availablePoints >= costToIncrease && wisdom < 15) {
                                     wisdom++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(wisdom) - AttributesModifier.calculateAttributeCost(wisdom - 1)
                                 if (wisdom > 8) {
                                     wisdom--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
@@ -183,15 +194,17 @@ fun AttributeDistributionScreen(character: dnk.library.character.Character, onBa
                             attributeName = "Charisma",
                             attributeValue = charisma,
                             onIncrement = {
-                                if (availablePoints > 0 && charisma < 15) {
+                                val costToIncrease = AttributesModifier.calculateAttributeCost(charisma + 1) - AttributesModifier.calculateAttributeCost(charisma)
+                                if (availablePoints >= costToIncrease && charisma < 15) {
                                     charisma++
-                                    availablePoints--
+                                    availablePoints -= costToIncrease
                                 }
                             },
                             onDecrement = {
+                                val costToDecrease = AttributesModifier.calculateAttributeCost(charisma) - AttributesModifier.calculateAttributeCost(charisma - 1)
                                 if (charisma > 8) {
                                     charisma--
-                                    availablePoints++
+                                    availablePoints += costToDecrease
                                 }
                             }
                         )
